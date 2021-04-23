@@ -11,7 +11,6 @@ export function Header() {
         <img src="/logo.svg" alt="Logo" />
       </a>
 
-
       <p>O melhor para você ouvir, sempre</p>
 
       <span>{currentDate}</span>

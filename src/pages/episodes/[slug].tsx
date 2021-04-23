@@ -1,13 +1,15 @@
-import { format, parseISO } from 'date-fns';
-import { GetStaticPaths, GetStaticProps } from 'next';
-import { useRouter } from 'next/router'
-import { api } from '../../services/api';
-import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString';
-import ptBr from 'date-fns/locale/pt-BR';
-
 import Image from "next/image"
 import Link from "next/link";
+import Head from "next/head"
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { format, parseISO } from 'date-fns';
+import ptBr from 'date-fns/locale/pt-BR';
+
 import styles from "./episode.module.scss";
+
+import { api } from '../../services/api';
+import { usePlayer } from '../../contexts/PlayerContext';
+import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString';
 
 type Episode = {
   id: string,
@@ -26,8 +28,16 @@ type EpisodeProps = {
 }
 
 export default function data({ episode }: EpisodeProps) {
+
+  const { play } = usePlayer();
+
   return (
     <div className={styles.episode}>
+
+      <Head>
+        <title>{episode.title}</title>
+      </Head>
+
       <div className={styles.thumbnailContainer}>
         <Link href="/">
           <button type="button">
@@ -40,7 +50,7 @@ export default function data({ episode }: EpisodeProps) {
           src={episode.thumbnail}
           objectFit="cover"
         />
-        <button type="button">
+        <button type="button" onClick={() => play(episode)}>
           <img src="/play.svg" alt="Tocar episódio" />
         </button>
       </div>
